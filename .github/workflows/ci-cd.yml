@@ -70,10 +70,12 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          # Если перенес Dockerfile в корень, эту строку (file) можно удалить
           file: ./on_it_1/Dockerfile 
           push: true
-          tags: ghcr.io/${{ github.repository }}:latest
+          # Заменил ${{ github.repository }} на ручной ввод маленькими буквами
+          tags: |
+            ghcr.io/inoet/on-it-3:latest
+            ghcr.io/inoet/on-it-3:${{ github.sha }}
           build-args: |
             DB_USER=${{ secrets.DB_USER }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
