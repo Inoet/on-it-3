@@ -70,6 +70,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+file: ./on_it_1/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
