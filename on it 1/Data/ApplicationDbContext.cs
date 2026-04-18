@@ -21,8 +21,8 @@ namespace on_it_1.Data
             if (!optionsBuilder.IsConfigured)
             {
               
-                optionsBuilder.UseNpgsql("Host=db;Port=5432;Database=NirvanaDB;Username=postgres;Password=paleo");
-                //optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=NirvanaDB;Username=postgres;Password=paleo");
+                //optionsBuilder.UseNpgsql("Host=db;Port=5432;Database=NirvanaDB;Username=postgres;Password=paleo");
+                optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=NirvanaDB;Username=postgres;Password=paleo");
 
             }
         }
