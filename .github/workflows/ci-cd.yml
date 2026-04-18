@@ -66,16 +66,16 @@ jobs:
             type=raw,value=latest
             type=sha,format=short
             
-      - name: Build and Push
+     - name: Build and Push
         uses: docker/build-push-action@v5
         with:
-          context: .
-          file: ./on_it_1/Dockerfile 
+          # Точка означает корень репозитория
+          context: . 
+          # Путь к файлу в кавычках, так как в названии папки есть пробелы
+          file: "./on it 1/Dockerfile" 
           push: true
-          # Заменил ${{ github.repository }} на ручной ввод маленькими буквами
           tags: |
             ghcr.io/inoet/on-it-3:latest
-            ghcr.io/inoet/on-it-3:${{ github.sha }}
           build-args: |
             DB_USER=${{ secrets.DB_USER }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
