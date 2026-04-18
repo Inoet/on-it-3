@@ -1,24 +1,20 @@
-# Стейдж 1: Сборка
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 8080
+
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-
-# Копируем файл проекта (используем JSON-синтаксис для надежности)
-COPY ["on it 1.csproj", "./"]
-RUN dotnet restore "on it 1.csproj"
-
-# Копируем всё остальное
+# Копируем файл проекта, учитывая папку с пробелами
+COPY ["on it 1/on it 1.csproj", "on it 1/"]
+RUN dotnet restore "on it 1/on it 1.csproj"
 COPY . .
+WORKDIR "/src/on it 1"
+RUN dotnet build "on it 1.csproj" -c Release -o /app/build
 
-# Сборка. ВНИМАНИЕ: убрал --no-restore, чтобы он еще раз всё проверил
-RUN dotnet publish "on it 1.csproj" -c Release -o /app/publish
+FROM build AS publish
+RUN dotnet publish "on it 1.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-# Стейдж 2: Запуск
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+FROM base AS final
 WORKDIR /app
-COPY --from=build /app/publish .
-
-# Установка curl для healthcheck
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
-
-# Запуск. Обязательно в кавычках!
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "on it 1.dll"]
