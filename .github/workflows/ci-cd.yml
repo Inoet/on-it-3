@@ -66,15 +66,15 @@ jobs:
             type=raw,value=latest
             type=sha,format=short
             
-      - name: Build and push
+      - name: Build and Push
         uses: docker/build-push-action@v5
         with:
           context: .
-file: ./on_it_1/Dockerfile
+          # Если перенес Dockerfile в корень, эту строку (file) можно удалить
+          file: ./on_it_1/Dockerfile 
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          # Передаем секреты как аргументы сборки (если нужно)
+          tags: ghcr.io/${{ github.repository }}:latest
           build-args: |
             DB_USER=${{ secrets.DB_USER }}
-            DB_PASS=${{ secrets.DB_PASSWORD }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            DB_NAME=${{ secrets.DB_NAME }}
